@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.2.2 编程处理数据 - 共享单车都去哪了？</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <div id="knowledge-btn" onclick="toggleKnowledge()">📖 知识库</div>
+        
+        <div id="knowledge-panel" class="hidden">
+            <div class="knowledge-header">
+                <h3>📚 Pandas 知识库</h3>
+                <button onclick="toggleKnowledge()">✕</button>
+            </div>
+            <div class="knowledge-content">
+                <div class="knowledge-item">
+                    <h4>读取数据</h4>
+                    <pre><code>import pandas as pd
+df = pd.read_csv("bike_data.csv")
+print(df.head())</code></pre>
+                </div>
+                <div class="knowledge-item">
+                    <h4>数据筛选</h4>
+                    <pre><code>df[ df["列名"] == "值" ]
+df[ df["时间"] == "8:30" ]</code></pre>
+                </div>
+                <div class="knowledge-item">
+                    <h4>分组统计</h4>
+                    <pre><code>df.groupby("列名").sum()
+df.groupby("区域类型")["车辆数"].sum()</code></pre>
+                </div>
+                <div class="knowledge-item">
+                    <h4>排序</h4>
+                    <pre><code>df.sort_values("列名", ascending=False)
+df.sort_values("车辆数", ascending=False)</code></pre>
+                </div>
+                <div class="knowledge-item">
+                    <h4>绑定图</h4>
+                    <pre><code>plt.bar(x数据, y数据)
+plt.bar(df["区域"], df["数量"])
+plt.show()</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="login-view" class="view active">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="bike-icon">🚲</div>
+                    <h1>共享单车都去哪了？</h1>
+                    <p class="subtitle">4.2.2 编程处理数据</p>
+                </div>
+                <form class="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" id="username" placeholder="请输入姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>班级</label>
+                        <input type="text" id="classname" placeholder="请输入班级" required>
+                    </div>
+                    <button type="submit" class="btn-primary">进入学习</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="home-view" class="view">
+            <div class="home-container">
+                <div class="course-header">
+                    <div class="course-icon">🚲</div>
+                    <h1>共享单车都去哪了？</h1>
+                    <p class="course-subtitle">4.2.2 编程处理数据 · 互动学习平台</p>
+                </div>
+                <div class="course-info">
+                    <div class="info-card">
+                        <span class="info-icon">📚</span>
+                        <div>
+                            <h4>课程类型</h4>
+                            <p>学考复习课</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">⏱️</span>
+                        <div>
+                            <h4>课时时长</h4>
+                            <p>40分钟</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">👥</span>
+                        <div>
+                            <h4>学习对象</h4>
+                            <p>高中信息技术学考</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="learning-objectives">
+                    <h3>📋 学习目标</h3>
+                    <ul>
+                        <li><strong>知识与技能</strong>：掌握pandas数据读取、筛选、分组统计、排序、matplotlib柱状图绘制</li>
+                        <li><strong>过程与方法</strong>：掌握"读，筛，算，排，画"的数据处理方式</li>
+                        <li><strong>情感态度</strong>：感受数据分析解决现实问题的价值，培养数据思维</li>
+                    </ul>
+                </div>
+                <button class="btn-primary btn-large" onclick="startActivity(0)">
+                    🚀 开始学习
+                </button>
+            </div>
+        </div>
+
+        <div id="activity-0" class="view activity-view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 5%"></div>
+            </div>
+            <div class="activity-container">
+                <div class="activity-header">
+                    <span class="activity-badge">情境再现</span>
+                    <h2>早上的共享单车都去哪了？</h2>
+                </div>
+                
+                <div class="scenario-intro">
+                    <div class="scenario-card">
+                        <p class="scenario-text">上周六早上9点，小明从家里出来，想扫一辆共享单车去商场，可是小区门口一辆车都没有……</p>
+                        <p class="scenario-question">早上的共享单车都去哪了？</p>
+                    </div>
+                </div>
+
+                <div class="time-control">
+                    <h3>⏰ 请点击时间按钮，观察小区门口车辆数变化</h3>
+                    <div class="current-time">
+                        <span class="time-label">当前时间</span>
+                        <span id="current-time-display" class="time-value">7:00</span>
+                    </div>
+                    <div class="time-buttons">
+                        <button onclick="changeTime(-60)" class="time-btn">⏪ -1小时</button>
+                        <button onclick="changeTime(-30)" class="time-btn">⏪ -30分钟</button>
+                        <button onclick="changeTime(-10)" class="time-btn">⏪ -10分钟</button>
+                        <button onclick="changeTime(10)" class="time-btn">+10分钟 ⏩</button>
+                        <button onclick="changeTime(30)" class="time-btn">+30分钟 ⏩</button>
+                        <button onclick="changeTime(60)" class="time-btn">+1小时 ⏩</button>
+                    </div>
+                </div>
+
+                <div class="location-visual">
+                    <div class="location-header">
+                        <h3>🏠 小区门口共享单车状态</h3>
+                    </div>
+                    <div class="locations-grid" id="locations-grid">
+                    </div>
+                    <div class="total-count">
+                        <span>小区门口车辆总数：</span>
+                        <strong id="total-bikes">129</strong>
+                    </div>
+                </div>
+
+                <div class="observation-task">
+                    <div class="task-card">
+                        <h4>🔍 观察任务</h4>
+                        <p>记录：几点开始小区门口的车明显减少？</p>
+                        <input type="text" id="observation-answer" placeholder="请输入你的观察结果（如：8:30）">
+                    </div>
+                </div>
+
+                <div class="activity-actions">
+                    <button class="btn-secondary" onclick="goHome()">返回首页</button>
+                    <button class="btn-primary" onclick="startActivity(1)">活动一：设计分析流程 →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-1" class="view activity-view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 20%"></div>
+            </div>
+            <div class="activity-container">
+                <div class="activity-header">
+                    <span class="activity-badge">活动一</span>
+                    <h2>规划分析流程</h2>
+                </div>
+
+                <div class="flow-intro">
+                    <p>为了解决这个问题，我们应该按什么顺序进行分析？</p>
+                    <p class="hint">提示：请将以下步骤拖拽到正确位置</p>
+                </div>
+
+                <div class="flow-activity">
+                    <div class="step-options" id="step-options">
+                        <div class="step-card draggable" draggable="true" data-step="A">
+                            <span class="step-letter">A</span>
+                            <span class="step-text">查看各个区域的车辆数据</span>
+                        </div>
+                        <div class="step-card draggable" draggable="true" data-step="B">
+                            <span class="step-letter">B</span>
+                            <span class="step-text">查看哪个区域的车最少，哪个区域的车最多</span>
+                        </div>
+                        <div class="step-card draggable" draggable="true" data-step="C">
+                            <span class="step-letter">C</span>
+                            <span class="step-text">根据车消失的时间，确定对哪个时间的车辆数据进行分析</span>
+                        </div>
+                        <div class="step-card draggable" draggable="true" data-step="D">
+                            <span class="step-letter">D</span>
+                            <span class="step-text">可视化呈现</span>
+                        </div>
+                    </div>
+
+                    <div class="answer-area">
+                        <h4>我的答案（请拖拽步骤卡片到下方）</h4>
+                        <div class="answer-slots" id="answer-slots">
+                            <div class="slot" data-position="1"></div>
+                            <div class="slot" data-position="2"></div>
+                            <div class="slot" data-position="3"></div>
+                            <div class="slot" data-position="4"></div>
+                        </div>
+                        <div class="arrow-between">
+                            <span>→</span><span>→</span><span>→</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-check" onclick="checkFlowAnswer()">检查答案</button>
+                    <div id="flow-feedback" class="feedback hidden"></div>
+                </div>
+
+                <div class="activity-actions">
+                    <button class="btn-secondary" onclick="goHome()">返回首页</button>
+                    <button class="btn-secondary" onclick="startActivity(0)">← 情境再现</button>
+                    <button class="btn-primary" onclick="startActivity(2)">活动二：筛选数据 →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-2" class="view activity-view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 35%"></div>
+            </div>
+            <div class="activity-container">
+                <div class="activity-header">
+                    <span class="activity-badge">活动二</span>
+                    <h2>筛选——锁定关键时刻</h2>
+                </div>
+
+                <div class="question-box">
+                    <p>我们发现什么时候开始小区门口的车几乎没有了？</p>
+                    <p class="highlight-text">对，8点半左右的时候！现在需要从所有时刻的车辆数据中筛选出8:30的数据。</p>
+                </div>
+
+                <div class="code-exercise">
+                    <div class="code-block">
+                        <pre><code><span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+df = pd.read_csv(<span class="string">"bike_data.csv"</span>)
+
+<span class="comment"># 筛选：从所有时刻记录里，找出8:30的所有行</span>
+timebike = df[ df[<span class="string">"时间"</span>] <input type="text" class="code-input" id="filter-answer" placeholder="________"> ]
+<span class="function">print</span>(timebike)</code></pre>
+                    </div>
+                    <button class="btn-run" onclick="runFilterCode()">▶ 运行代码</button>
+                </div>
+
+                <div class="result-area" id="filter-result">
+                    <div class="result-placeholder">点击"运行代码"查看结果</div>
+                </div>
+
+                <div class="activity-actions">
+                    <button class="btn-secondary" onclick="goHome()">返回首页</button>
+                    <button class="btn-secondary" onclick="startActivity(1)">← 活动一</button>
+                    <button class="btn-primary" onclick="startActivity(3)">活动三：分组统计 →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-3" class="view activity-view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%"></div>
+            </div>
+            <div class="activity-container">
+                <div class="activity-header">
+                    <span class="activity-badge">活动三</span>
+                    <h2>分组统计——各区域有多少车</h2>
+                </div>
+
+                <div class="question-box">
+                    <p>为了查看各个区域的车辆数据，我们应该进行什么操作？</p>
+                    <p class="highlight-text">按区域类型（住宅区、公交站、商圈）分组统计。</p>
+                </div>
+
+                <div class="code-exercise">
+                    <div class="code-block">
+                        <pre><code><span class="comment"># 按区域类型分组，只对车辆数求和</span>
+df1 = timebike.groupby(<input type="text" class="code-input" id="groupby-col" placeholder="_____">, as_index=<span class="keyword">False</span>)[<input type="text" class="code-input" id="agg-col" placeholder="_____" size="12">].<input type="text" class="code-input" id="agg-func" placeholder="_____" size="8>
+<span class="function">print</span>(df1)</code></pre>
+                    </div>
+                    <button class="btn-run" onclick="runGroupbyCode()">▶ 运行代码</button>
+                </div>
+
+                <div class="result-area" id="groupby-result">
+                    <div class="result-placeholder">点击"运行代码"查看结果</div>
+                </div>
+
+                <div class="activity-actions">
+                    <button class="btn-secondary" onclick="goHome()">返回首页</button>
+                    <button class="btn-secondary" onclick="startActivity(2)">← 活动二</button>
+                    <button class="btn-primary" onclick="startActivity(4)">活动四：排序 →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-4" class="view activity-view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <div class="activity-container">
+                <div class="activity-header">
+                    <span class="activity-badge">活动四</span>
+                    <h2>排序——揭示规律</h2>
+                </div>
+
+                <div class="question-box">
+                    <p>接下来查看哪个区域的车最少，哪个区域的车最多。</p>
+                    <p class="highlight-text">按车辆数降序排列，找出答案！</p>
+                </div>
+
+                <div class="code-exercise">
+                    <div class="code-block">
+                        <pre><code><span class="comment"># 按车辆数降序排列，找到车最多和最少的地方</span>
+df2 = df1.<span class="function">sort_values</span>(<span class="string">"车辆数"</span>, ascending=<input type="text" class="code-input" id="sort-answer" placeholder="_______">)
+
+<span class="function">print</span>(<span class="string">"车最多的区域为："</span>)
+<span class="function">print</span>(df2.<span class="function">head</span>(1))
+<span class="function">print</span>(<span class="string">"车最少的区域为："</span>)
+<span class="function">print</span>(df2.<span class="function">tail</span>(1))</code></pre>
+                    </div>
+                    <button class="btn-run" onclick="runSortCode()">▶ 运行代码</button>
+                </div>
+
+                <div class="result-area" id="sort-result">
+                    <div class="result-placeholder">点击"运行代码"查看结果</div>
+                </div>
+
+                <div class="conclusion-box">
+                    <h4>💡 结论</h4>
+                    <p>早上8:30，小区门口的车都去哪了？</p>
+                    <p class="answer-highlight"><strong>→ 商场或者公交站！</strong></p>
+                </div>
+
+                <div class="activity-actions">
+                    <button class="btn-secondary" onclick="goHome()">返回首页</button>
+                    <button class="btn-secondary" onclick="startActivity(3)">← 活动三</button>
+                    <button class="btn-primary" onclick="startActivity(5)">活动五：可视化 →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-5" class="view activity-view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 80%"></div>
+            </div>
+            <div class="activity-container">
+                <div class="activity-header">
+                    <span class="activity-badge">活动五</span>
+                    <h2>可视化——让数据更直观</h2>
+                </div>
+
+                <div class="question-box">
+                    <p>为了使数据更加形象直观，我们应该怎么做？</p>
+                    <p class="highlight-text">画出各区域车辆数的柱状图！</p>
+                </div>
+
+                <div class="code-exercise">
+                    <div class="code-block">
+                        <pre><code><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+plt.rcParams[<span class="string">"font.sans-serif"</span>] = [<span class="string">"SimHei"</span>]
+
+<span class="comment"># 画柱形图</span>
+plt.<span class="function">bar</span>(<input type="text" class="code-input" id="bar-x" placeholder="_____" size="15">, <input type="text" class="code-input" id="bar-y" placeholder="_____" size="15">)
+plt.<span class="function">title</span>(<span class="string">"8:30各区域共享单车数量对比"</span>)
+plt.<span class="function">xlabel</span>(<span class="string">"区域类型"</span>)
+plt.<span class="function">ylabel</span>(<span class="string">"车辆总数"</span>)
+plt.<span class="function">show</span>()</code></pre>
+                    </div>
+                    <button class="btn-run" onclick="drawChart()">📊 绘制图表</button>
+                </div>
+
+                <div class="chart-area" id="chart-result">
+                    <canvas id="bikeChart"></canvas>
+                </div>
+
+                <div class="activity-actions">
+                    <button class="btn-secondary" onclick="goHome()">返回首页</button>
+                    <button class="btn-secondary" onclick="startActivity(4)">← 活动四</button>
+                    <button class="btn-primary" onclick="showSummary()">课堂小结 →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="summary-view" class="view">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+            <div class="summary-container">
+                <div class="summary-header">
+                    <h1>🎉 恭喜完成学习！</h1>
+                </div>
+
+                <div class="summary-section">
+                    <h3>📝 课堂小结</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-step">
+                            <span class="flow-icon">📖</span>
+                            <span>读数据</span>
+                        </div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step">
+                            <span class="flow-icon">🔍</span>
+                            <span>筛数据</span>
+                        </div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step">
+                            <span class="flow-icon">🧮</span>
+                            <span>算数据</span>
+                        </div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step">
+                            <span class="flow-icon">📊</span>
+                            <span>排数据</span>
+                        </div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-step">
+                            <span class="flow-icon">📈</span>
+                            <span>画数据</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3>💡 核心观点</h3>
+                    <div class="highlight-box">
+                        <p><strong>用编程处理数据，用数据驱动决策，解决生活中的问题！</strong></p>
+                        <p class="examples">电商推荐、交通信号灯、超市货架……背后都有数据分析</p>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3>🎯 数据驱动决策</h3>
+                    <table class="decision-table">
+                        <thead>
+                            <tr>
+                                <th>场景</th>
+                                <th>数据依据</th>
+                                <th>决策行动</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>早高峰前</td>
+                                <td>7:00住宅区车多</td>
+                                <td>无需调度，保持现状</td>
+                            </tr>
+                            <tr>
+                                <td>早高峰时</td>
+                                <td>8:30车流向商圈/公交站</td>
+                                <td>从住宅区调车到商圈/公交站</td>
+                            </tr>
+                            <tr>
+                                <td>晚高峰前</td>
+                                <td>数据预测</td>
+                                <td>提前从商圈调车回住宅区</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="summary-actions">
+                    <button class="btn-secondary" onclick="startActivity(5)">← 活动五</button>
+                    <button class="btn-primary btn-large" onclick="goHome()">返回首页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
